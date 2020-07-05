@@ -44,7 +44,7 @@ def downloadImage(url, save_dir, overwrite=False):
 
 
 def getImageUrls(url):
-	print('Retrieving images from "{0}"'.format(url))
+	print('Attempting to retrieve images from "{0}"... '.format(url), end='')
 	
 	with urllib.request.urlopen(url) as resp:
 		html = resp.read().decode('utf-8')
@@ -84,7 +84,13 @@ def sync(url, save_dir):
 	print('Starting sync')
 	count = [0, 0, 0]	# [0]: downloaded, [1]: skipped, [2]: failed
 	
-	for img_url in getImageUrls(args.url):
+	try:
+		img_urls = getImageUrls(args.url)
+	except urllib.error.URLError as urlErr:
+		print('[!] Sync failed due to url error')
+		return
+	
+	for img_url in img_urls:
 		try:
 			result = downloadImage(img_url, args.save_dir)
 		except urllib.error.HTTPError as httpErr:
