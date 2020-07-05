@@ -1,2 +1,10 @@
 # Ignore test download directory
 files/
+
+# Ignore python cache
+__pycache__/
+
+# Ignore build files
+build/
+dist/
+sync.spec
